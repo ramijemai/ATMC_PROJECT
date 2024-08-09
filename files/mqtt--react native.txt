@@ -1,0 +1,42 @@
+// App.js
+import React, { useEffect, useState } from 'react';
+import { View, Text } from 'react-native';
+import { Client, Message } from 'react-native-paho-mqtt';
+
+const App = () => {
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    const client = new Client({
+      uri: 'ws://<Raspberry_Pi_IP>:9001', // MQTT broker URI
+      clientId: 'react-native-client',
+    });
+
+    client.on('connectionLost', (responseObject) => {
+      console.log('Connection lost:', responseObject.errorMessage);
+    });
+
+    client.on('messageReceived', (msg) => {
+      setMessage(msg.payloadString);
+    });
+
+    client.connect().then(() => {
+      client.subscribe('test/topic');
+      const message = new Message('Hello from React Native');
+      message.destinationName = 'test/topic';
+      client.send(message);
+    });
+
+    return () => {
+      client.disconnect();
+    };
+  }, []);
+
+  return (
+    <View>
+      <Text>{message ? message : 'Waiting for message...'}</Text>
+    </View>
+  );
+};
+
+export default App;
