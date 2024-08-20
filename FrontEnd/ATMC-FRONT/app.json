@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "ATMC-FRONT",
+    "slug": "ATMC-FRONT",
+    "version": "1.0.0",
+    "splash": {
+      "image": "./assets/Splash.png",
+      "resizeMode": "contain", 
+      "backgroundColor": "#202466" 
+    }
+  }
+}

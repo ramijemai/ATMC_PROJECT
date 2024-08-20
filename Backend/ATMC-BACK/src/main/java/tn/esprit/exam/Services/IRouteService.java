@@ -15,6 +15,8 @@ public interface IRouteService {
 
     public void DeleteRoute(Long RouteID);
 
+    public Route InitiateRoute(Long RouteID, Status S, int KM, Date startedAT);
+
     public Route SetCompletedRoute(Long RouteID, Status S, int KM, Date arrivedAT);
 
     public int getNumberOfRoutesCompletedPerDriverMonthly(String CIN);

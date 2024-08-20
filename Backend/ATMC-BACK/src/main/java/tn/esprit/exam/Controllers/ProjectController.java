@@ -119,12 +119,20 @@ public class ProjectController {
         return routeService.retrieveAllRoutes();
     }
 
-    @Operation(description = "UPDATE Route")
+    @Operation(description = "UPDATE Route Status")
     @PutMapping("/update-Route/{RouteID}/{KMArrivé}/{Status}")
     public Route UpdateRouteStatus(@PathVariable("RouteID") Long RouteID, @PathVariable("KMArrivé") int KMArrivé, @RequestParam Status newStatus) {
         Date arrivedAT = new Date();
         return routeService.SetCompletedRoute(RouteID, newStatus, KMArrivé, arrivedAT);
     }
+
+    @Operation(description = "Start Route ")
+    @PutMapping("/start-Route/{RouteID}/{KmDebut}/{Status}")
+    public Route InitiateRoute(@PathVariable("RouteID") Long RouteID, @PathVariable("KmDebut") int KmDebut, @RequestParam Status newStatus) {
+        Date startedAt = new Date();
+        return routeService.InitiateRoute(RouteID, newStatus, KmDebut, startedAt);
+    }
+
 
     @Operation(description = "Get number of routes per driver")
     @GetMapping("/routes/completed")

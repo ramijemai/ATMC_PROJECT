@@ -1,0 +1,156 @@
+import React, { useState } from 'react';
+import { View, StyleSheet, ScrollView, Text, TextInput,Image } from 'react-native';
+import { Button } from '@rneui/themed';
+
+
+const CommencerRoute = () => {
+  const [numRoute, setNumRoute] = useState('');
+  const [kmDebut, setKmDebut] = useState('');
+  const [status, setStatus] = useState('COMMENCÉE');
+  const [dateDebut, setDateDebut] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = () => {
+    // Validate the form fields
+    if (!numRoute) {
+      setError('Veuillez entrer le numéro du route.');
+      return;
+    }
+    if (!kmDebut) {
+      setError('Veuillez entrer le KM de départ.');
+      return;
+    }
+    if (!status) {
+      setError('Veuillez saisir le statut.');
+      return;
+    }
+    if (!dateDebut) {
+      setError('Veuillez saisir la date.');
+      return;
+    }
+
+    // Reset the error message and perform the submission logic
+    setError('');
+    console.log('Form submitted:', { numRoute, kmDebut, status, dateDebut });
+  };
+
+  return (
+    <ScrollView>
+      <View style={styles.screen}>
+        <View style={styles.card}>
+        <Image source={require('../Driver/Home/Items/CommT.png')} style={styles.image}></Image>
+            <View style={styles.inputContainer}>
+            <Text style={styles.label}>Num Route</Text>
+            <TextInput
+              style={[styles.input, styles.flexGrow]}
+              value={numRoute}
+              onChangeText={setNumRoute}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>KM Debut</Text>
+            <TextInput
+              style={[styles.input, styles.flexGrow]}
+              value={kmDebut}
+              onChangeText={setKmDebut}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Status</Text>
+            <TextInput
+              style={[styles.input, styles.flexGrow]}
+              value={status}
+              onChangeText={setStatus}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Commencé à</Text>
+            <TextInput
+              style={[styles.input, styles.flexGrow]}
+              value={dateDebut}
+              onChangeText={setDateDebut}
+            />
+          </View>
+          {error ? (
+            <Text style={styles.errorText}>{error}</Text>
+          ) : null}
+          <Button
+          title="Confirmer"
+          onPress={handleSubmit}
+          buttonStyle={styles.buttonStyle}
+          containerStyle={styles.buttonContainer}
+          titleStyle={styles.buttonTitle}
+        />
+        </View>
+      </View>
+    </ScrollView>
+  );
+};
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: '#f2f2f2',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+  },
+  card: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 24,
+    width: '100%',
+    height: '100%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  label: {
+    marginRight: 8,
+    fontWeight: 'bold',
+    width: 100,
+  },
+  input: {
+    backgroundColor: '#f2f2f2',
+    borderRadius: 8,
+    padding: 12,
+  },
+  flexGrow: {
+    flex: 1,
+  },
+  image: {
+    width: '100%',
+    height: 200,
+    marginBottom:25,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 12,
+  },
+  buttonStyle: {
+    backgroundColor: 'red',
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 30,
+  },
+  buttonContainer: {
+    width: 180,
+    marginVertical: 10,
+    alignSelf: 'center',
+  },
+  buttonTitle: {
+    fontWeight: 'bold',
+  },
+});
+export default CommencerRoute;

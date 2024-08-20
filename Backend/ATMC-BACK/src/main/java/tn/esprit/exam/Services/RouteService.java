@@ -48,6 +48,17 @@ public class RouteService implements IRouteService {
     }
 
     @Override
+    public Route InitiateRoute(Long RouteID, Status S, int KmDebut, Date startedAT) {
+
+        Route R = routeRepository.getOne(RouteID);
+        R.setStatus(S);
+        R.setStartKM(KmDebut);
+        R.setStartedAT(startedAT);
+
+        return routeRepository.save(R);
+    }
+
+    @Override
     public Route SetCompletedRoute(Long RouteID, Status S, int KM, Date arrivedAT) {
         Route R = routeRepository.getOne(RouteID);
         R.setStatus(S);
