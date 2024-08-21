@@ -140,6 +140,11 @@ public class ProjectController {
         return routeService.getNumberOfRoutesCompletedPerDriverMonthly(CIN);
     }
 
+    @Operation(description = "Get current Route")
+    @GetMapping("/routes/current")
+    public Route getAssignedRoute(@RequestParam String CIN) {
+        return routeService.getCurrentRoute(CIN);
+    }
 
     @GetMapping("/kilometers/traveled")
     public long getTotalKilometersTraveled(@RequestParam String CIN) {

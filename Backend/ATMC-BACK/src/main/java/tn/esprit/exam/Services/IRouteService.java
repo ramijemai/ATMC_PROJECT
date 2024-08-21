@@ -11,6 +11,7 @@ public interface IRouteService {
 
     public Route AddRoutetoDriver(Route R, long DriverID);
 
+
     public Route UpdateRoute(Route R);
 
     public void DeleteRoute(Long RouteID);
@@ -22,6 +23,9 @@ public interface IRouteService {
     public int getNumberOfRoutesCompletedPerDriverMonthly(String CIN);
 
     public long getNumberofKilometersPerDriver(String CIN);
+
+    public Route getCurrentRoute(String CIN);
+
 
     public List<Route> retrieveAllRoutes();
 }

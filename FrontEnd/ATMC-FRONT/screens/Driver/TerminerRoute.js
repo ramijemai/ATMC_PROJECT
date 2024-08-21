@@ -1,33 +1,51 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, Text, TextInput,Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Text, TextInput, Image, Alert } from 'react-native';
 import { Button } from '@rneui/themed';
 
 
 const TerminerRoute = () => {
   const [numRoute, setNumRoute] = useState('');
   const [EndKM, setEndKM] = useState('');
-  const [status, setStatus] = useState('COMPLETEE');
+  const [status] = useState('COMPLETEE');
   const [error, setError] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Validate the form fields
     if (!numRoute) {
       setError('Veuillez entrer le numéro du route.');
       return;
     }
     if (!EndKM) {
-      setError('Veuillez entrer le Kilometrage.');
+      setError('Veuillez entrer le KM d arrivé.');
       return;
     }
-    if (!status) {
-      setError('Veuillez saisir le statut.');
-      return;
-    }
-    
 
-    // Reset the error message and perform the submission logic
-    setError('');
-    console.log('Form submitted:', { numRoute, EndKM, status, arrivedAT });
+    try {
+      // Perform API call to start the route
+      const response = await fetch(
+       `http://192.168.0.55:8089/ATMC/ATMC/update-Route/${numRoute}/${EndKM}/${status}?newStatus=${status}`, 
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            newStatus: status,  // Optional as the status is in the URL path
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        Alert.alert("Success", "Route Completed successfully!");
+        console.log('API Response:', result);
+      } else {
+        setError('Failed.');
+      }
+    } catch (error) {
+      console.error('Error starting route:', error);
+      setError('Failed to start route.');
+    }
   };
 
   return (
@@ -35,12 +53,13 @@ const TerminerRoute = () => {
       <View style={styles.screen}>
         <View style={styles.card}>
         <Image source={require('../Driver/Home/Items/endImg.jpg')} style={styles.image}></Image>
-            <View style={styles.inputContainer}>
+        <View style={styles.inputContainer}>
             <Text style={styles.label}>Num Route</Text>
             <TextInput
               style={[styles.input, styles.flexGrow]}
               value={numRoute}
               onChangeText={setNumRoute}
+              keyboardType="default"
             />
           </View>
           <View style={styles.inputContainer}>
@@ -49,27 +68,21 @@ const TerminerRoute = () => {
               style={[styles.input, styles.flexGrow]}
               value={EndKM}
               onChangeText={setEndKM}
+              keyboardType="numeric"
             />
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Status</Text>
-            <TextInput
-              style={[styles.input, styles.flexGrow]}
-              value={status}
-              onChangeText={setStatus}
-            />
+            <Text style={styles.input}>{status}</Text>
           </View>
-          
-          {error ? (
-            <Text style={styles.errorText}>{error}</Text>
-          ) : null}
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
           <Button
-          title="Confirmer"
-          onPress={handleSubmit}
-          buttonStyle={styles.buttonStyle}
-          containerStyle={styles.buttonContainer}
-          titleStyle={styles.buttonTitle}
-        />
+            title="Confirmer"
+            onPress={handleSubmit}
+            buttonStyle={styles.buttonStyle}
+            containerStyle={styles.buttonContainer}
+            titleStyle={styles.buttonTitle}
+          />
         </View>
       </View>
     </ScrollView>

@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -84,6 +85,16 @@ public class RouteService implements IRouteService {
     public long getNumberofKilometersPerDriver(String CIN) {
         long totalKilometers = routeRepository.getTotalKilometersByDriverCIN(CIN);
         return totalKilometers;
+    }
+
+    @Override
+    public Route getCurrentRoute(String CIN) {
+        List<Route> routes = routeRepository.getRoutesByDriver_CIN(CIN);
+
+        return routes.stream()
+                .filter(route -> route.getStatus() == Status.EN_COURS || route.getStatus() == Status.COMMENCÉE)
+                .findFirst()
+                .orElse(null);
     }
 
 

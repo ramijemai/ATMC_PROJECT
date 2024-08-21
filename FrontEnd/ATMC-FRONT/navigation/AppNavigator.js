@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Screen1 from '../screens/Driver/Screen1';
-import Chat  from '../screens/Driver/Chat';
+import Chat from '../screens/Driver/Chat';
 import LoginScreen from '../screens/LoginScreen';
 import Header from '../components/header';
 import Route from '../screens/Driver/CommencerRoute';
@@ -13,13 +13,20 @@ import endRo from '../screens/Driver/TerminerRoute';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const HomeStack = () => {
+const HomeStack = ({ route }) => {
+  const { userInfo } = route.params;  // Access userInfo here
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Screen1" component={Screen1} />
+      <Stack.Screen
+        name="Screen1"
+        component={Screen1}
+        initialParams={{ userInfo }}  // Pass it down to Screen1
+      />
     </Stack.Navigator>
   );
 };
+
 
 const ChatStack = () => {
   return (
@@ -36,6 +43,7 @@ const MapsStack = () => {
     </Stack.Navigator>
   );
 };
+
 const EndStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -50,13 +58,14 @@ const AppNavigator = () => {
       <Header />
       <Stack.Navigator initialRouteName="LoginScreen">
         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Tabs" component={TabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name="Tabs" component={TabNavigator} options={{ headerShown: false }} initialParams={{ userInfo: null }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-const TabNavigator = () => {
+const TabNavigator = ({ route }) => {
+  const { userInfo } = route.params;
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -77,7 +86,11 @@ const TabNavigator = () => {
         tabBarInactiveTintColor: '#ccc',
       })}
     >
-      <Tab.Screen name="Home" component={HomeStack} />
+      <Tab.Screen
+        name="Home"
+        component={HomeStack}
+        initialParams={{ userInfo }}  // Pass userInfo to HomeStack
+      />
       <Tab.Screen name="messages" component={ChatStack} />
       <Tab.Screen name="startR" component={MapsStack} />
       <Tab.Screen name="endR" component={EndStack} />

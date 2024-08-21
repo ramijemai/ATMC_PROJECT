@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { Button } from '@rneui/themed';
 import CommonLayout from '../components/CommonLayout.js';
 
@@ -8,11 +8,39 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('driver');
 
-  const handleLogin = () => {
-    console.log('CIN:', CIN);
-    console.log('Password:', password);
-    console.log('Role:', role);
-    navigation.navigate('Screen1');
+  const handleLogin = async () => {
+    if (role === 'driver') {
+      try {
+        console.log('CIN:', CIN);
+        console.log('password:', password);
+  
+         // Add a debugger statement to pause execution and inspect the values
+  
+        const response = await fetch('http://192.168.0.55:8089/ATMC/ATMC/Login-Driver', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({ CIN, password }).toString(),
+        });
+  
+        const text = await response.text();
+        
+        if (response.ok) {
+          const data = JSON.parse(text);
+          console.log('Login successful:', data);
+          navigation.navigate('Tabs', { userInfo: data }); 
+        } else {
+          console.error('Login failed:', text);
+          Alert.alert('Login Failed', 'Please check your credentials');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        Alert.alert('Error', 'An error occurred during login');
+      }
+    } else {
+      Alert.alert('Role Selection', 'Please select the Driver role to log in');
+    }
   };
 
   return (
@@ -28,7 +56,6 @@ export default function LoginScreen({ navigation }) {
           placeholder="CIN"
           value={CIN}
           onChangeText={setCIN}
-          keyboardType="email-address"
         />
 
         <TextInput
@@ -40,7 +67,6 @@ export default function LoginScreen({ navigation }) {
         />
 
         <View style={styles.roleContainer}>
-          
           <TouchableOpacity
             style={styles.roleOption}
             onPress={() => setRole('manager')}
