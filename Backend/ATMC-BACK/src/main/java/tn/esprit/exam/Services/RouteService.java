@@ -31,8 +31,8 @@ public class RouteService implements IRouteService {
 
 
     @Override
-    public Route AddRoutetoDriver(Route R, long DriverID) {
-        Driver d = driverRepository.getOne(DriverID);
+    public Route AddRoutetoDriver(Route R, long Userid) {
+        Driver d = driverRepository.getOne(Userid);
         R.setDriver(d);
         R.setEndKM(0);
         return routeRepository.save(R);

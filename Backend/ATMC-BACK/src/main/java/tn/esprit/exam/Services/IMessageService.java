@@ -1,18 +1,14 @@
 package tn.esprit.exam.Services;
 
 
+import tn.esprit.exam.Entity.AddMessageDTO;
 import tn.esprit.exam.Entity.Message;
+import tn.esprit.exam.Entity.MessageDTO;
 
 import java.util.List;
 
 public interface IMessageService {
-    public Message addDriverMessage(Message M, Long DriverID);
+    public MessageDTO addMessage(AddMessageDTO addMessageDto);
 
-    public Message addAdminMessage(Message M, long fleetManagerID);
-
-    public Message updateMessage(Message M);
-
-    public void DeleteMessage(long MessageId);
-
-    public List<Message> retrieveAllMessages();
+    public List<MessageDTO> retrieveAllMessages();
 }

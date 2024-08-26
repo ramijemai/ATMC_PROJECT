@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.exam.Entity.*;
 import tn.esprit.exam.Services.IMessageService;
@@ -154,28 +156,17 @@ public class ProjectController {
 
     //////////////Messages/////////////////////////
 
-    @Operation(description = "ADD Message")
-    @PostMapping("/add-Message/{DriverID}")
-    public Message AddMessage(@RequestBody Message F, @PathVariable("DriverID") Long DriverID) {
-        return messageService.addDriverMessage(F, DriverID);
+    @PostMapping("/addMessage")
+    public MessageDTO addMessage(@RequestBody AddMessageDTO addMessageDto) {
+        // Passes the DTO to the service to create and save the message
+        return messageService.addMessage(addMessageDto);
+
     }
 
-
-    @Operation(description = "UPDATE Message")
-    @PutMapping("/update-Message")
-    public Message UpdateMessage(@RequestBody Message M) {
-        return messageService.updateMessage(M);
-    }
-
-    @Operation(description = "DELETE Message")
-    @DeleteMapping("/Delete-Message/{MessageID}")
-    public void RemoveMessage(@PathVariable("MessageID") Long MessageID) {
-        messageService.DeleteMessage(MessageID);
-    }
 
     @Operation(description = "Get All Messages")
     @GetMapping("/Get-Messages")
-    public List<Message> GetAllMessages() {
+    public List<MessageDTO> GetAllMessages() {
         return messageService.retrieveAllMessages();
     }
 

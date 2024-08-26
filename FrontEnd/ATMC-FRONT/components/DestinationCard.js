@@ -1,14 +1,19 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 
-const DestinationCard = ({ image, title,numero, location,status }) => {
+const DestinationCard = ({ image, title,numero, location,status,arrivementEstime,numRemorque,client,typeRemorque,typeVoyage  }) => {
   return (
     <View style={styles.card}>
       <Image source={image} style={styles.image} />
       <View style={styles.content}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.textfield}>{numero}</Text>
+        <Text style={styles.textfield} >{client}</Text>
         <Text style={styles.textfield}>{location}</Text>
+        <Text style={styles.textfield} >{arrivementEstime}</Text>
+        <Text style={styles.textfield} >{numRemorque}</Text>
+        <Text style={styles.textfield} >{typeRemorque}</Text>
+        <Text style={styles.textfield} >{typeVoyage}</Text>
         <Text style={styles.textfield} >{status}</Text>
       </View>
     </View>

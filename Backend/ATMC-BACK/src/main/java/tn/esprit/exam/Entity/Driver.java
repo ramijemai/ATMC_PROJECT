@@ -28,9 +28,5 @@ public class Driver {
     @OneToMany(mappedBy = "driver")
     private List<Route> currentRoutes;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "sender")
-    private List<Message> messages;
-
 
 }

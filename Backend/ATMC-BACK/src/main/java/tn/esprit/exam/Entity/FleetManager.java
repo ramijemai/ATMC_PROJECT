@@ -23,7 +23,5 @@ public class FleetManager {
     private String CIN;
     private String password;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "recipient")
-    private List<Message> receivedMessages;
+    
 }

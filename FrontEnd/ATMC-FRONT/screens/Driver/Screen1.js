@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet,ScrollView,Text  } from 'react-native';
 import DestinationCard from '../../components/DestinationCard';
+import { Button } from '@rneui/themed';
 
-const Screen1 = ({ route }) => {
+
+const Screen1 = ({ route ,navigation}) => {
   const { userInfo } = route.params; 
   const [routeData, setRouteData] = useState(null);
   const [routesCompData,setRoutesCompData]= useState(null);
@@ -71,11 +73,20 @@ const Screen1 = ({ route }) => {
       }
     };
 
-    fetchRouteData();
-    fetchRoutesCompletetd();
-    fetchKmTraveled();
-  }, [CIN]);
+    const intervalId = setInterval(() => {
+      fetchRouteData();
+      fetchRoutesCompletetd();
+      fetchKmTraveled();
+    }, 1000); // Fetch every 1 second
 
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [CIN]);
+  
+  const formatTimestamp = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString(); // Converts to local date and time format
+  };
 
    // Access userInfo here
   return (
@@ -89,7 +100,15 @@ const Screen1 = ({ route }) => {
           numero={`Route numero: ${routeData.routeID}`}
           location={`Destination: ${routeData.destination}`}
           status={`Status: ${routeData.status}`}
+          arrivementEstime={`Arrivement estimé: ${formatTimestamp(routeData.arrivementEstime)}`}
+          numRemorque={`Numero Remorque: ${routeData.numRemorque}`}
+          client={`Client: ${routeData.client}`}
+          typeRemorque={`Type remorque: ${routeData.typeRemorque}`}
+          typeVoyage={`Type Voyage: ${routeData.typeVoyage}`}
+
         />
+        
+        
       ) : (
         <DestinationCard
           image={require('./Home/Items/truckImage.jpg')}
@@ -103,19 +122,26 @@ const Screen1 = ({ route }) => {
        image={require('./Home/Items/stats.png')}
        title="Mes performances"
       numero={'Total Kilometres parcourus : '+KmTraveled}
-      location={'Routes Completées :'+routesCompData}
+      client={'Routes Completées :'+routesCompData}
        
       />
       <DestinationCard
        image={require('./Home/Items/chats.jpg')}
        title="Profile"
        numero={'Utilisateur :' + userInfo.name}
-       location={'CIN :'+userInfo.cin}
-       status={'Camion: '+userInfo.assignedTruck}
+       client={'CIN :'+userInfo.cin}
+       location={'Camion: '+userInfo.assignedTruck}
 
 
       />
     </View>
+    <Button
+            title="Deconnecter"
+            onPress={() => navigation.navigate('LoginScreen')}
+            buttonStyle={styles.buttonStyle}
+            containerStyle={styles.buttonContainer}
+            titleStyle={styles.buttonTitle}
+          />
     </ScrollView>
   );
 };
@@ -125,6 +151,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f2f2',
     paddingVertical: 16,
+  },
+  buttonStyle: {
+    backgroundColor: 'red',
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 30,
+  },
+  buttonContainer: {
+    width: 180,
+    marginVertical: 10,
+    alignSelf: 'center',
+  },
+  buttonTitle: {
+    fontWeight: 'bold',
   },
 });
 

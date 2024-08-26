@@ -21,14 +21,7 @@ public class Message {
     private Long MessageId;
     private String Content;
     private Date timestamp;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "DriverID")
-    private Driver sender;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "fleetManagerID")
-    private FleetManager recipient;
+    
+    private Long senderId;  // L'ID du manager ou du driver
+    private String senderType;  // 'driver' ou 'manager'
 }

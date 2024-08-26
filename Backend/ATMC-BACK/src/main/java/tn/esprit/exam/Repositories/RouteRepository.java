@@ -19,4 +19,6 @@ public interface RouteRepository extends JpaRepository<Route, Long> {
 
     @Query("SELECT SUM(r.EndKM - r.StartKM) FROM Route r WHERE r.driver.CIN = :CIN")
     long getTotalKilometersByDriverCIN(@Param("CIN") String CIN);
+
+
 }

@@ -20,11 +20,17 @@ public class Route {
     private String Destination;
     private int StartKM;
     private int EndKM;
+    private Date arrivementEstime;
     private Date startedAT;
     private Date arrivedAT;
+    private String Client;
+    private String numRemorque;
     @Enumerated(EnumType.STRING)
     private Status status;
-
+    @Enumerated(EnumType.STRING)
+    private TypeVoyage typeVoyage;
+    @Enumerated(EnumType.STRING)
+    private TypeRemorque typeRemorque;
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "DriverID")
