@@ -3,6 +3,7 @@ package tn.esprit.exam.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import java.util.Date;
 
@@ -31,6 +32,12 @@ public class Route {
     private TypeVoyage typeVoyage;
     @Enumerated(EnumType.STRING)
     private TypeRemorque typeRemorque;
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private byte[] Chargement;
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private byte[] Dechargement;
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "DriverID")

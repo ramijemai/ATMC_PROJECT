@@ -39,8 +39,36 @@ export default function LoginScreen({ navigation }) {
         Alert.alert('Error', 'An error occurred during login');
       }
     } else {
-      Alert.alert('Role Selection', 'Please select the Driver role to log in');
+      try {
+        console.log('CIN:', CIN);
+        console.log('password:', password);
+  
+         // Add a debugger statement to pause execution and inspect the values
+  
+        const response = await fetch('http://192.168.0.55:8089/ATMC/ATMC/Login-Manager', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({ CIN, password }).toString(),
+        });
+  
+        const text = await response.text();
+        
+        if (response.ok) {
+          const data = JSON.parse(text);
+          console.log('Login successful:', data);
+          navigation.navigate('MTAB', { userInfo: data }); 
+        } else {
+          console.error('Login failed:', text);
+          Alert.alert('Login Failed', 'Please check your credentials');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        Alert.alert('Error', 'An error occurred during login');
+      }
     }
+    
   };
 
   return (

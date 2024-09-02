@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet,ScrollView,Text  } from 'react-native';
+import { View, StyleSheet,ScrollView,Linking  } from 'react-native';
 import DestinationCard from '../../components/DestinationCard';
 import { Button } from '@rneui/themed';
 
@@ -88,6 +88,11 @@ const Screen1 = ({ route ,navigation}) => {
     return date.toLocaleString(); // Converts to local date and time format
   };
 
+  const openGoogleMaps = () => {
+    const url = `https://www.google.com/maps`;
+    // Open URL
+    Linking.openURL(url).catch(err => console.error('Error opening Google Maps', err));
+  };
    // Access userInfo here
   return (
     <ScrollView>
@@ -117,7 +122,11 @@ const Screen1 = ({ route ,navigation}) => {
          
         />
       )}
-
+      <Button title="Maps" 
+          onPress={openGoogleMaps}
+          buttonStyle={styles.buttonStyle}
+            containerStyle={styles.buttonContainer}
+            titleStyle={styles.buttonTitle} />
 <DestinationCard
        image={require('./Home/Items/stats.png')}
        title="Mes performances"
@@ -142,6 +151,7 @@ const Screen1 = ({ route ,navigation}) => {
             containerStyle={styles.buttonContainer}
             titleStyle={styles.buttonTitle}
           />
+          
     </ScrollView>
   );
 };

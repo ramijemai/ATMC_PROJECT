@@ -6,12 +6,19 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.exam.Entity.Driver;
 import tn.esprit.exam.Entity.Route;
 import tn.esprit.exam.Entity.Status;
 import tn.esprit.exam.Repositories.DriverRepository;
 import tn.esprit.exam.Repositories.RouteRepository;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -48,23 +55,55 @@ public class RouteService implements IRouteService {
         routeRepository.deleteById(RouteID);
     }
 
-    @Override
-    public Route InitiateRoute(Long RouteID, Status S, int KmDebut, Date startedAT) {
+    public Route InitiateRoute(Long RouteID, Status S, int KmDebut, Date startedAT, MultipartFile chargement) throws IOException {
 
         Route R = routeRepository.getOne(RouteID);
         R.setStatus(S);
         R.setStartKM(KmDebut);
         R.setStartedAT(startedAT);
 
+        if (chargement != null && !chargement.isEmpty()) {
+            // Convert MultipartFile to BufferedImage
+            BufferedImage originalImage = ImageIO.read(new ByteArrayInputStream(chargement.getBytes()));
+
+            // Compress the image (e.g., scale down to 50% of the original size)
+            BufferedImage compressedImage = compressImage(originalImage, 0.5f);
+
+            // Convert BufferedImage back to byte array
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(compressedImage, "jpg", baos);
+            byte[] compressedBytes = baos.toByteArray();
+
+            // Set the compressed image in the entity
+            R.setChargement(compressedBytes);
+        }
+
         return routeRepository.save(R);
     }
 
+    private BufferedImage compressImage(BufferedImage originalImage, float scale) {
+        int scaledWidth = (int) (originalImage.getWidth() * scale);
+        int scaledHeight = (int) (originalImage.getHeight() * scale);
+
+        Image scaledImage = originalImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+
+        BufferedImage compressedImage = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = compressedImage.createGraphics();
+        g2d.drawImage(scaledImage, 0, 0, null);
+        g2d.dispose();
+
+        return compressedImage;
+    }
+
     @Override
-    public Route SetCompletedRoute(Long RouteID, Status S, int KM, Date arrivedAT) {
+    public Route SetCompletedRoute(Long RouteID, Status S, int KM, Date arrivedAT, MultipartFile dechargement) throws IOException {
         Route R = routeRepository.getOne(RouteID);
         R.setStatus(S);
         R.setEndKM(KM);
         R.setArrivedAT(arrivedAT);
+        if (dechargement != null && !dechargement.isEmpty()) {
+            R.setDechargement(dechargement.getBytes());
+        }
         return routeRepository.save(R);
     }
 

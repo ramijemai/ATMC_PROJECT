@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.exam.Entity.*;
 import tn.esprit.exam.Services.IMessageService;
 import tn.esprit.exam.Services.IRouteService;
 import tn.esprit.exam.Services.IUserService;
 import tn.esprit.exam.Services.UserService;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -50,7 +52,6 @@ public class ProjectController {
     public void RemoveManager(@PathVariable("FleetManagerID") Long FleetManagerID) {
         userService.DeleteManager(FleetManagerID);
     }
-
 
     @Operation(description = "Login Fleet manager")
     @PostMapping("/Login-Manager")
@@ -123,16 +124,27 @@ public class ProjectController {
 
     @Operation(description = "UPDATE Route Status")
     @PutMapping("/update-Route/{RouteID}/{KMArrivé}/{Status}")
-    public Route UpdateRouteStatus(@PathVariable("RouteID") Long RouteID, @PathVariable("KMArrivé") int KMArrivé, @RequestParam Status newStatus) {
+    public ResponseEntity<Route> UpdateRouteStatus(@PathVariable("RouteID") Long RouteID, @PathVariable("KMArrivé") int KMArrivé, @RequestParam Status newStatus, @RequestParam(value = "image", required = false) MultipartFile image) {
         Date arrivedAT = new Date();
-        return routeService.SetCompletedRoute(RouteID, newStatus, KMArrivé, arrivedAT);
+        try {
+            Route completedRoute = routeService.SetCompletedRoute(RouteID, newStatus, KMArrivé, arrivedAT, image);
+            return ResponseEntity.ok(completedRoute);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @Operation(description = "Start Route ")
     @PutMapping("/start-Route/{RouteID}/{KmDebut}/{Status}")
-    public Route InitiateRoute(@PathVariable("RouteID") Long RouteID, @PathVariable("KmDebut") int KmDebut, @RequestParam Status newStatus) {
+    public ResponseEntity<Route> InitiateRoute(@PathVariable("RouteID") Long RouteID, @PathVariable("KmDebut") int KmDebut, @RequestParam Status newStatus, @RequestParam(value = "image", required = false) MultipartFile image) {
+
         Date startedAt = new Date();
-        return routeService.InitiateRoute(RouteID, newStatus, KmDebut, startedAt);
+        try {
+            Route updatedRoute = routeService.InitiateRoute(RouteID, newStatus, KmDebut, startedAt, image);
+            return ResponseEntity.ok(updatedRoute);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 

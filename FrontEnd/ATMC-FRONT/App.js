@@ -1,24 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import React ,{ useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
+import { NavigationContainer } from '@react-navigation/native'; // Import NavigationContainer
 import AppNavigator from './navigation/AppNavigator';
 
+// Prevent the splash screen from auto-hiding
+SplashScreen.preventAutoHideAsync();
 
-SplashScreen.preventAutoHideAsync()
 export default function App() {
   useEffect(() => {
     const prepare = async () => {
-      // Do some tasks, like loading resources or fetching data
+      // Simulate loading resources or fetching data
       await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate a task
-      SplashScreen.hideAsync(); // Hides the splash screen when tasks are complete
+      SplashScreen.hideAsync(); // Hide the splash screen when tasks are complete
     };
 
     prepare();
   }, []);
+
   return (
-    
-     <AppNavigator />
+      <AppNavigator />
   );
 }
 

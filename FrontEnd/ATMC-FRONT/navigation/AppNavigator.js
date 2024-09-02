@@ -9,8 +9,10 @@ import Header from '../components/header';
 import LoginScreen from '../screens/LoginScreen';
 import Route from '../screens/Driver/CommencerRoute';
 import endRo from '../screens/Driver/TerminerRoute';
+import MHome from '../screens/Manager/MHome';
 
 const Tab = createBottomTabNavigator();
+const MTAB = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const HomeStack = ({ route }) => {
@@ -115,6 +117,114 @@ const TabNavigator = ({ route }) => {
     </Tab.Navigator>
   );
 };
+////////////////////////// MANAGER  ////////////////////////////
+
+const ManagerHomeStack = ({ route }) => {
+  const { userInfo } = route.params;
+
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="MHome"
+        component={MHome}
+        initialParams={{ userInfo }}  // Pass userInfo to Screen1
+      />
+    </Stack.Navigator>
+  );
+};
+
+const MChatStack = ({ route }) => {
+  const { userInfo } = route.params;
+
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="Chat"
+        component={Chat}
+        initialParams={{ userInfo }}  // Pass userInfo to ChatScreen
+      />
+    </Stack.Navigator>
+  );
+};
+
+const MMapsStack = ({ route }) => {
+  const { userInfo } = route.params;
+
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="Commencer Route"
+        component={Route}
+        initialParams={{ userInfo }}  // Pass userInfo to Route
+      />
+    </Stack.Navigator>
+  );
+};
+
+const MEndStack = ({ route }) => {
+  const { userInfo } = route.params;
+
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="Terminer Route"
+        component={endRo}
+        initialParams={{ userInfo }}  // Pass userInfo to TerminerRoute
+      />
+    </Stack.Navigator>
+  );
+};
+
+const MTabNavigator = ({ route }) => {
+  const { userInfo } = route.params;
+
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === 'MHome') {
+            iconName = 'home';
+          } else if (route.name === 'Mmessages') {
+            iconName = 'comments';
+          } else if (route.name === 'MstartR') {
+            iconName = 'truck';
+          } else if (route.name === 'MendR') {
+            iconName = 'map-pin';
+          }
+          return <FontAwesome5 name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: '#007AFF',
+        tabBarInactiveTintColor: '#ccc',
+      })}
+    >
+      <Tab.Screen
+        name="MHome"
+        component={ManagerHomeStack}
+        initialParams={{ userInfo }}  // Pass userInfo to HomeStack
+      />
+      <Tab.Screen
+        name="Mmessages"
+        component={MChatStack}
+        initialParams={{ userInfo }}  // Pass userInfo to ChatStack
+      />
+      <Tab.Screen
+        name="MstartR"
+        component={MMapsStack}
+        initialParams={{ userInfo }}  // Pass userInfo to MapsStack
+      />
+      <Tab.Screen
+        name="MendR"
+        component={MEndStack}
+        initialParams={{ userInfo }}  // Pass userInfo to EndStack
+      />
+    </Tab.Navigator>
+  );
+};
+
+
+
+
 
 const AppNavigator = () => {
   return (
@@ -123,6 +233,7 @@ const AppNavigator = () => {
       <Stack.Navigator initialRouteName="LoginScreen">
         <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Tabs" component={TabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name="MTAB" component={MTabNavigator} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
