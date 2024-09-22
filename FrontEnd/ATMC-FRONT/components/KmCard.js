@@ -1,6 +1,4 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
-import AnimatedGraph from './AnimatedGraph';
 import { View, StyleSheet,Image } from 'react-native';
 
 const App = () => {

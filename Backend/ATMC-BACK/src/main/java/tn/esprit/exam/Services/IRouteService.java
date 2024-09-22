@@ -29,6 +29,7 @@ public interface IRouteService {
 
     public Route getCurrentRoute(String CIN);
 
+    public List<Route> getRoutesPerStatus(Status status);
 
     public List<Route> retrieveAllRoutes();
 }

@@ -16,7 +16,7 @@ export default function LoginScreen({ navigation }) {
   
          // Add a debugger statement to pause execution and inspect the values
   
-        const response = await fetch('http://192.168.0.55:8089/ATMC/ATMC/Login-Driver', {
+        const response = await fetch('http://192.168.1.16:8089/ATMC/ATMC/Login-Driver', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -38,14 +38,14 @@ export default function LoginScreen({ navigation }) {
         console.error('Error:', error);
         Alert.alert('Error', 'An error occurred during login');
       }
-    } else {
+    } else if (role === 'manager') {
       try {
         console.log('CIN:', CIN);
         console.log('password:', password);
   
          // Add a debugger statement to pause execution and inspect the values
   
-        const response = await fetch('http://192.168.0.55:8089/ATMC/ATMC/Login-Manager', {
+        const response = await fetch('http://192.168.1.16:8089/ATMC/ATMC/Login-Manager', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

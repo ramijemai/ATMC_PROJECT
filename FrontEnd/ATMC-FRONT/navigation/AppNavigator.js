@@ -10,6 +10,11 @@ import LoginScreen from '../screens/LoginScreen';
 import Route from '../screens/Driver/CommencerRoute';
 import endRo from '../screens/Driver/TerminerRoute';
 import MHome from '../screens/Manager/MHome';
+import AssignRoute from '../screens/Manager/AssignRoute';
+import ListeChaffeurs from '../screens/Manager/ListeChauffers';
+import AddDriverScreen from '../screens/Manager/AddDriverScreen';
+import ChatManager from '../screens/Manager/ChatManager';
+import RoutesScreen from '../screens/Manager/RoutePage';
 
 const Tab = createBottomTabNavigator();
 const MTAB = createBottomTabNavigator();
@@ -125,7 +130,7 @@ const ManagerHomeStack = ({ route }) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
-        name="MHome"
+        name="Menu"
         component={MHome}
         initialParams={{ userInfo }}  // Pass userInfo to Screen1
       />
@@ -140,7 +145,7 @@ const MChatStack = ({ route }) => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="Chat"
-        component={Chat}
+        component={ChatManager}
         initialParams={{ userInfo }}  // Pass userInfo to ChatScreen
       />
     </Stack.Navigator>
@@ -153,13 +158,14 @@ const MMapsStack = ({ route }) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
-        name="Commencer Route"
-        component={Route}
+        name="Route"
+        component={RoutesScreen}
         initialParams={{ userInfo }}  // Pass userInfo to Route
       />
     </Stack.Navigator>
   );
 };
+
 
 const MEndStack = ({ route }) => {
   const { userInfo } = route.params;
@@ -167,8 +173,8 @@ const MEndStack = ({ route }) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
-        name="Terminer Route"
-        component={endRo}
+        name="Liste des chauffeurs"
+        component={ListeChaffeurs}
         initialParams={{ userInfo }}  // Pass userInfo to TerminerRoute
       />
     </Stack.Navigator>
@@ -183,15 +189,22 @@ const MTabNavigator = ({ route }) => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          if (route.name === 'MHome') {
+          if (route.name === 'Home') {
             iconName = 'home';
-          } else if (route.name === 'Mmessages') {
+          } else if (route.name === 'Chat') {
             iconName = 'comments';
-          } else if (route.name === 'MstartR') {
+          } else if (route.name === 'Routes') {
             iconName = 'truck';
-          } else if (route.name === 'MendR') {
-            iconName = 'map-pin';
+          } else if (route.name === 'Liste des chauffeurs') {
+            iconName = 'user';
           }
+          else if (route.name === 'Ajouter Chauffeur') {
+            iconName = 'user-plus';
+          }
+          else if (route.name === 'Add Route') {
+            iconName = 'folder-plus';
+          }
+          
           return <FontAwesome5 name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: '#007AFF',
@@ -199,25 +212,38 @@ const MTabNavigator = ({ route }) => {
       })}
     >
       <Tab.Screen
-        name="MHome"
+        name="Home"
         component={ManagerHomeStack}
         initialParams={{ userInfo }}  // Pass userInfo to HomeStack
       />
+      
       <Tab.Screen
-        name="Mmessages"
-        component={MChatStack}
-        initialParams={{ userInfo }}  // Pass userInfo to ChatStack
-      />
-      <Tab.Screen
-        name="MstartR"
-        component={MMapsStack}
+        name="Routes"
+        component={RoutesScreen}
         initialParams={{ userInfo }}  // Pass userInfo to MapsStack
       />
       <Tab.Screen
-        name="MendR"
-        component={MEndStack}
+        name="Add Route"
+        component={AssignRoute}
+        initialParams={{ userInfo }}  // Pass userInfo to MapsStack
+      />
+      <Tab.Screen
+        name="Chat"
+        component={ChatManager}
         initialParams={{ userInfo }}  // Pass userInfo to EndStack
       />
+      <Tab.Screen
+        name="Liste des chauffeurs"
+        component={ListeChaffeurs}
+        initialParams={{ userInfo }}  // Pass userInfo to ChatStack
+      />
+<Tab.Screen
+        name="Ajouter Chauffeur"
+        component={AddDriverScreen}
+        initialParams={{ userInfo }}  // Pass userInfo to EndStack
+
+      />
+
     </Tab.Navigator>
   );
 };

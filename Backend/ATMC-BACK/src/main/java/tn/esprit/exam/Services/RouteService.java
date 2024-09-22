@@ -136,9 +136,16 @@ public class RouteService implements IRouteService {
                 .orElse(null);
     }
 
+    @Override
+    public List<Route> getRoutesPerStatus(Status status) {
+
+        return routeRepository.findByStatus(status);
+    }
+
 
     @Override
     public List<Route> retrieveAllRoutes() {
         return routeRepository.findAll();
     }
 }
+

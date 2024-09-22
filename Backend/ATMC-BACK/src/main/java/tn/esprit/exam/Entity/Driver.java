@@ -25,7 +25,7 @@ public class Driver {
     private String assignedTruck;
     private String password;
     @JsonIgnore
-    @OneToMany(mappedBy = "driver")
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Route> currentRoutes;
 
 

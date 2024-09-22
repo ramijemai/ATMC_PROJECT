@@ -14,7 +14,7 @@ const ChatScreen = ({ route }) => {
     // Set up polling to fetch messages every 2 seconds
     const intervalId = setInterval(() => {
       fetchMessages();
-    }, 1000); 
+    }, 1000); // 2000 milliseconds = 2 seconds
 
     // Clean up the interval on component unmount
     return () => clearInterval(intervalId);
@@ -37,8 +37,8 @@ const ChatScreen = ({ route }) => {
 
     const newMessage = {
       content: messageInput,
-      senderId: userInfo.driverID,  // Replace with actual sender ID
-      senderType: 'driver'  // Replace with actual sender type
+      senderId: userInfo.fleetManagerID,  // Replace with actual sender ID
+      senderType: 'manager'  // Replace with actual sender type
     };
 
     try {
@@ -52,7 +52,6 @@ const ChatScreen = ({ route }) => {
 
       setMessageInput('');  // Clear input field
       fetchMessages();  // Refresh messages
-      
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -60,7 +59,7 @@ const ChatScreen = ({ route }) => {
 
   const renderItem = ({ item }) => (
     <View style={styles.messageContainer}>
-      <Text style={styles.senderName}>Moi</Text>
+      <Text style={styles.senderName}>Responsable</Text>
       <Text style={styles.messageContent}>{item.content}</Text>
       <Text style={styles.messageTimestamp}>{new Date(item.timestamp).toLocaleTimeString()}</Text>
     </View>

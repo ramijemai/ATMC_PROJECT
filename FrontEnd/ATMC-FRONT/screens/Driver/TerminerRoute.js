@@ -8,7 +8,7 @@ import * as FileSystem from 'expo-file-system';
 
 const MAX_IMAGE_SIZE = 1 * 800 * 1024; // 1MB in bytes
 
-const TerminerRoute = () => {
+const TerminerRoute = ({navigation}) => {
   const [numRoute, setNumRoute] = useState('');
   const [EndKM, setEndKM] = useState('');
   const [status] = useState('COMPLETEE');
@@ -86,7 +86,7 @@ const TerminerRoute = () => {
       });
       // Perform API call to start the route
       const response = await fetch(
-       `http://192.168.0.55:8089/ATMC/ATMC/update-Route/${numRoute}/${EndKM}/${status}?newStatus=${status}`, 
+       `http://192.168.1.16:8089/ATMC/ATMC/update-Route/${numRoute}/${EndKM}/${status}?newStatus=${status}`, 
         {
           method: 'PUT',
           headers: {
@@ -103,6 +103,8 @@ const TerminerRoute = () => {
         setNumRoute('');
         setEndKM('');
         setImageUri(null);
+        navigation.navigate('Home')
+
       } else {
         setError('Failed to Complete route.');
       }

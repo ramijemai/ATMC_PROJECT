@@ -165,6 +165,12 @@ public class ProjectController {
         return routeService.getNumberofKilometersPerDriver(CIN);
     }
 
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<Route>> getRoutesByStatus(@PathVariable Status status) {
+        List<Route> routes = routeService.getRoutesPerStatus(status);
+        return ResponseEntity.ok(routes);
+    }
+
 
     //////////////Messages/////////////////////////
 

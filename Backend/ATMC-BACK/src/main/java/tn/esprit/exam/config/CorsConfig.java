@@ -15,10 +15,12 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
+
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:8089")); // Allow Swagger UI origin
+        config.setAllowedOrigins(Arrays.asList("http://localhost:19006", "http://192.168.1.16:8089", "http://192.168.28.149:8089")); // Allow frontend origins
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
+
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

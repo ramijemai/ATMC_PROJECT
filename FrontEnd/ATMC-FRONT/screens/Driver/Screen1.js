@@ -15,7 +15,7 @@ const Screen1 = ({ route ,navigation}) => {
   useEffect(() => {
     const fetchRouteData = async () => {
       try {
-        const response = await fetch(`http://192.168.0.55:8089/ATMC/ATMC/routes/current?CIN=${CIN}`, {
+        const response = await fetch(`http://192.168.1.16:8089/ATMC/ATMC/routes/current?CIN=${CIN}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ const Screen1 = ({ route ,navigation}) => {
 
     const fetchRoutesCompletetd = async () => {
       try {
-        const response = await fetch(`http://192.168.0.55:8089/ATMC/ATMC/routes/completed?CIN=${CIN}`, {
+        const response = await fetch(`http://192.168.1.16:8089/ATMC/ATMC/routes/completed?CIN=${CIN}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ const Screen1 = ({ route ,navigation}) => {
 
     const fetchKmTraveled = async () => {
       try {
-        const response = await fetch(`http://192.168.0.55:8089/ATMC/ATMC/kilometers/traveled?CIN=${CIN}`, {
+        const response = await fetch(`http://192.168.1.16:8089/ATMC/ATMC/kilometers/traveled?CIN=${CIN}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
